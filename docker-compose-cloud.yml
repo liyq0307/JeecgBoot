@@ -50,7 +50,8 @@ services:
       - jeecg-boot-nacos
     build:
       context: ./jeecg-boot/jeecg-server-cloud/jeecg-system-cloud-start
-    container_name: jeecg-system-start
+    container_name: jeecg-system-cloud-start
+    image: jeecg-boot-system-cloud
     hostname: jeecg-boot-system
     restart: on-failure
     environment:
