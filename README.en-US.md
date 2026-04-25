@@ -18,30 +18,13 @@ Current version: 3.9.1 (Release date: 2026-01-28)
 [![Skills](https://img.shields.io/badge/AI%20Skills-Natural%20Language%20Coding-ff4d4f.svg)](https://jeecg.com/skills)
 
 
-> 🔥 **AI Skills — Natural Language Programming, just released** — generate full-stack code, draw BPMN flows, design forms, build reports & dashboards, all from a single sentence. Covering every JeecgBoot low-code scenario.
+> 🔥 **AI Skills — Natural Language Programming**: paired with Claude Code, generate full-stack code, BPMN flows, forms, reports and dashboards from a single sentence. Covering every JeecgBoot low-code scenario.
 >
-> 📦 Skills repo: **https://github.com/jeecgboot/skills** ｜ 🌐 Skills site: **https://jeecg.com/skills** ｜ 📺 [Demo video](https://www.bilibili.com/video/BV1KKwTzJEbX/)
-
-
-🔥 AI Skills (Natural Language Programming)
------------------------------------
-
-> JeecgBoot now ships with **AI Skills** — paired with Claude Code, **a single sentence is enough to generate a complete system**, collapsing "idea → delivery" into one prompt.
-
-**🚀 One-stop entrances**
-
-| Entry | URL |
-|------|------|
-| 📦 Skills GitHub repo | **https://github.com/jeecgboot/skills** |
-| 🌐 Skills official site | **https://jeecg.com/skills** |
-| 📺 Demo video | [JeecgBoot + Skills Natural Language Coding](https://www.bilibili.com/video/BV1KKwTzJEbX/) |
-| 📖 Documentation | [Skill Comparison](https://help.jeecg.com/java/ai/skills/skill-comparison/) |
-
-**What can Skills do?**
-- ✅ Generate full CRUD code in one sentence (frontend + backend + SQL + menu permissions)
-- ✅ Create Online Form / Online Report / Designer Form in one sentence
-- ✅ Draw BPMN flows, big-screen dashboards and gauges in one sentence
-- ✅ Generate JimuReport, knowledge comics, portals, mini-flows… all from natural language
+> - 📦 Skills repo: **https://github.com/jeecgboot/skills**
+> - 🌐 Skills site: **https://jeecg.com/skills**
+> - 📺 Demo: [JeecgBoot + Skills Natural Language Coding](https://www.bilibili.com/video/BV1KKwTzJEbX/) ｜ 📖 Docs: [Skill Comparison](https://help.jeecg.com/java/ai/skills/skill-comparison/)
+>
+> **What can Skills do?** One sentence to: generate full CRUD code (frontend + backend + SQL + menu permissions) · create Online Form / Online Report / Designer Form · draw BPMN flows · build big-screen dashboards · generate JimuReport, portals, mini-flows and more.
 
 
 Project introduction

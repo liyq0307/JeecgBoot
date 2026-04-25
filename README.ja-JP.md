@@ -18,30 +18,13 @@ JEECG BOOT AI ローコードプラットフォーム
 [![Skills](https://img.shields.io/badge/AI%20Skills-自然言語プログラミング-ff4d4f.svg)](https://jeecg.com/skills)
 
 
-> 🔥 **AI Skills 自然言語プログラミング、新登場** — 一文でフルスタックコード生成、一文でフロー図作成、一文でフォーム設計、一文でレポートと大画面ダッシュボード生成。JeecgBoot ローコードの全シーンをカバー。
+> 🔥 **AI Skills 自然言語プログラミング**：Claude Code と組み合わせ、一文だけでフルスタックコード生成、BPMN フロー作成、フォーム設計、レポートと大画面ダッシュボード生成が可能。JeecgBoot ローコードの全シーンをカバー。
 >
-> 📦 Skills リポジトリ：**https://github.com/jeecgboot/skills** ｜ 🌐 Skills 公式サイト：**https://jeecg.com/skills** ｜ 📺 [デモ動画](https://www.bilibili.com/video/BV1KKwTzJEbX/)
-
-
-🔥 AI Skills（自然言語プログラミング）
------------------------------------
-
-> JeecgBoot に **AI Skills** が新搭載——Claude Code と組み合わせることで、**一文だけで完全なシステムを生成**でき、「思いつく → 実現する」を 1 つのプロンプトに圧縮します。
-
-**🚀 ワンストップ入口**
-
-| 入口 | URL |
-|------|------|
-| 📦 Skills GitHub リポジトリ | **https://github.com/jeecgboot/skills** |
-| 🌐 Skills 公式サイト | **https://jeecg.com/skills** |
-| 📺 デモ動画 | [JeecgBoot + Skills 自然言語プログラミング](https://www.bilibili.com/video/BV1KKwTzJEbX/) |
-| 📖 公式ドキュメント | [Skill 比較表](https://help.jeecg.com/java/ai/skills/skill-comparison/) |
-
-**Skills でできること：**
-- ✅ 一文で CRUD 全コードを生成（フロントエンド + バックエンド + SQL + メニュー権限）
-- ✅ 一文で Online フォーム / Online レポート / デザイナーフォームを作成
-- ✅ 一文で BPMN フロー図、大画面ダッシュボード、メーターを描画
-- ✅ 一文で JimuReport、知識漫画、ポータル、ミニフローも生成可能
+> - 📦 Skills リポジトリ：**https://github.com/jeecgboot/skills**
+> - 🌐 Skills 公式サイト：**https://jeecg.com/skills**
+> - 📺 デモ動画：[JeecgBoot + Skills 自然言語プログラミング](https://www.bilibili.com/video/BV1KKwTzJEbX/) ｜ 📖 ドキュメント：[Skill 比較表](https://help.jeecg.com/java/ai/skills/skill-comparison/)
+>
+> **Skills でできること：** 一文で CRUD 全コード（フロントエンド + バックエンド + SQL + メニュー権限）生成・Online フォーム / Online レポート / デザイナーフォーム作成・BPMN フロー描画・大画面ダッシュボード構築・JimuReport、ポータル、ミニフローなどを自然言語で生成。
 
 
 プロジェクト紹介
