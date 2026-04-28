@@ -21,7 +21,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jeecgframework.boot3</groupId>
-			<artifactId>hibernate-re</artifactId>
+			<artifactId>jeecg-online</artifactId>
 		</dependency>
 
 		<!-- AI大模型管理-->
