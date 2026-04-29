@@ -16,6 +16,7 @@ import org.jeecg.common.util.AssertUtils;
 import org.jeecg.common.util.filter.SsrfFileTypeFilter;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.AiChatConfig;
+import org.jeecg.config.AiRagConfigBean;
 import org.jeecg.modules.airag.common.consts.AiragConsts;
 import org.jeecg.modules.airag.common.handler.AIChatParams;
 import org.jeecg.modules.airag.common.handler.IAIChatHandler;
@@ -25,7 +26,6 @@ import org.jeecg.modules.airag.llm.entity.AiragMcp;
 import org.jeecg.modules.airag.llm.entity.AiragModel;
 import org.jeecg.modules.airag.llm.mapper.AiragMcpMapper;
 import org.jeecg.modules.airag.llm.mapper.AiragModelMapper;
-import org.jeecg.config.AiRagConfigBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -119,6 +119,9 @@ public class AIChatHandler implements IAIChatHandler {
      */
     public String completions(AiragModel airagModel, List<ChatMessage> messages, AIChatParams params) {
         params = mergeParams(airagModel, params);
+        //update-begin---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
+        messages = injectThinkingPlaceholderIfNeeded(messages, airagModel.getModelName());
+        //update-end---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
         String resp = null;
         try {
             resp = llmHandler.completions(messages, params);
@@ -205,8 +208,63 @@ public class AIChatHandler implements IAIChatHandler {
      */
     private TokenStream chat(AiragModel airagModel, List<ChatMessage> messages, AIChatParams params) {
         params = mergeParams(airagModel, params);
+        //update-begin---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
+        messages = injectThinkingPlaceholderIfNeeded(messages, airagModel.getModelName());
+        //update-end---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
         return llmHandler.chat(messages, params);
     }
+
+    //update-begin---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
+    /**
+     * 当目标模型是 DeepSeek 推理模型(deepseek-v4-flash 等)时，
+     * 为历史 AI 消息(从 MessageHistory 重建出来的、thinking 字段为空的 AiMessage)注入占位 thinking。
+     *
+     * 原因：DeepSeek 推理模型校验请求时要求每条 assistant 历史消息携带 reasoning_content 字段；
+     * langchain4j 的 sendThinking 仅在 AiMessage.thinking() 非空时才会注入 reasoning_content；
+     * 而历史持久化层(MessageHistory)目前没有保存 reasoning_content，重建出的 AiMessage thinking 始终为 null，
+     * 导致 DeepSeek 返回 "The reasoning_content in the thinking mode must be passed back to the API."
+     *
+     * 临时方案：注入占位字符串让 langchain4j 通过 isNullOrEmpty 校验、把 reasoning_content 字段带上，
+     * 后续若 MessageHistory 升级支持持久化 reasoning_content 可去掉该兜底。
+     *
+     * @param messages  原始消息列表(可能为 null/空)
+     * @param modelName 目标模型名(用于判定是否需要注入)
+     * @return 处理后的新消息列表(若无需处理则原样返回)
+     * @author scott
+     * @date 2026-04-29
+     */
+    private static List<ChatMessage> injectThinkingPlaceholderIfNeeded(List<ChatMessage> messages, String modelName) {
+        if (messages == null || messages.isEmpty()
+                || !LLMConsts.isDeepSeekThinkingModel(modelName)) {
+            return messages;
+        }
+        List<ChatMessage> result = new ArrayList<>(messages.size());
+        int injected = 0;
+        for (ChatMessage msg : messages) {
+            if (msg instanceof AiMessage) {
+                AiMessage aiMsg = (AiMessage) msg;
+                if (oConvertUtils.isEmpty(aiMsg.thinking())) {
+                    AiMessage rebuilt = AiMessage.builder()
+                            .text(aiMsg.text())
+                            // 占位：让 langchain4j 把 reasoning_content 字段带上以满足 DeepSeek 校验
+                            .thinking("...")
+                            .toolExecutionRequests(aiMsg.toolExecutionRequests())
+                            .attributes(aiMsg.attributes())
+                            .build();
+                    result.add(rebuilt);
+                    injected++;
+                    continue;
+                }
+            }
+            result.add(msg);
+        }
+        if (injected > 0) {
+            log.info("[AI-CHAT][issues/9585] 为 DeepSeek 推理模型[{}]的 {} 条历史 AI 消息注入了占位 thinking",
+                    modelName, injected);
+        }
+        return result;
+    }
+    //update-end---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
 
     /**
      * 使用默认模型聊天
@@ -305,6 +363,28 @@ public class AIChatHandler implements IAIChatHandler {
             // 插件/MCP处理
             buildPlugins(params);
         }
+
+        //update-begin---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
+        // 仅对 DeepSeek 推理模型(deepseek-reasoner/deepseek-v4-flash 等)开启思考过程的捕获与回传，
+        // 否则 deepseek-v4-flash 在工具调用多轮对话中会返回:
+        // "The reasoning_content in the thinking mode must be passed back to the API."
+        // 注意：不要对 deepseek-chat 等非推理模型开启，避免无意义的请求字段污染。
+        boolean isDsThinking = LLMConsts.isDeepSeekThinkingModel(modelName);
+        log.info("[AI-CHAT][issues/9585] mergeParams provider={}, modelName={}, isDeepSeekThinkingModel={}, params.returnThinking={}, params.sendThinking={}",
+                airagModel.getProvider(), modelName, isDsThinking, params.getReturnThinking(), params.getSendThinking());
+        if (isDsThinking) {
+            // returnThinking: 把响应中的 reasoning_content 解析到 AiMessage.thinking
+            if (null == params.getReturnThinking()) {
+                params.setReturnThinking(true);
+            }
+            // sendThinking: 把 AiMessage.thinking 以 reasoning_content 字段回传到下次请求
+            if (null == params.getSendThinking()) {
+                params.setSendThinking(true);
+            }
+            log.info("[AI-CHAT][issues/9585] mergeParams after-fix returnThinking={}, sendThinking={}",
+                    params.getReturnThinking(), params.getSendThinking());
+        }
+        //update-end---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
 
         return params;
     }

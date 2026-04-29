@@ -98,6 +98,42 @@ public class LLMConsts {
      */
     public static final String DEEPSEEK_REASONER = "deepseek-reasoner";
 
+    //update-begin---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
+    /**
+     * DEEPSEEK 推理模型(返回 reasoning_content 字段、在多轮工具调用中要求把 reasoning_content 回传)集合，
+     * 后续 DeepSeek 新增推理模型时在此追加；非推理模型(如 deepseek-chat)不要加入。
+     * 触发场景：仅当对话存在工具调用导致的多轮请求时才会出现 "reasoning_content must be passed back" 错误，
+     * 单轮 Q&A(如 AI 应用聊天无工具)不会触发，但开启 sendThinking 也无副作用。
+     */
+    public static final Set<String> DEEPSEEK_THINKING_MODELS = new HashSet<>(Arrays.asList(
+            "deepseek-reasoner",
+            "deepseek-v4-flash",
+            "deepseek-v4-pro"
+    ));
+
+    /**
+     * 判断指定模型名是否为 DeepSeek 推理模型(返回 reasoning_content 字段)
+     * 匹配规则：先做大小写不敏感的精确匹配，再做关键字包含匹配(reasoner/v4-flash/v4-pro)
+     * 以兼容带版本后缀的变体(如 deepseek-v4-flash-0428)
+     *
+     * @param modelName 模型名(大小写不敏感、首尾空白容错)
+     * @return true=推理模型；false=非推理模型或空
+     */
+    public static boolean isDeepSeekThinkingModel(String modelName) {
+        if (modelName == null || modelName.trim().isEmpty()) {
+            return false;
+        }
+        String name = modelName.trim().toLowerCase();
+        if (DEEPSEEK_THINKING_MODELS.contains(name)) {
+            return true;
+        }
+        // 兼容带版本后缀或厂商前缀的变体
+        return name.contains("reasoner")
+                || name.contains("v4-flash")
+                || name.contains("v4-pro");
+    }
+    //update-end---author:scott ---date:20260429  for：[issues/9585]DeepSeek大模型切换为新发布deepseek-v4-flash，流程中调用出现异常------------
+
     /**
      * 知识库类型：知识库
      */

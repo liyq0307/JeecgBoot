@@ -21,12 +21,14 @@
       "title": "DeepSeek",
       "value": "DEEPSEEK",
       "LLM": [
-        {"label": "deepseek-reasoner", "value": "deepseek-reasoner","descr": "【官方模型】深度求索 新推出的推理模型R1满血版\n火便全球。\n支持64k上下文，其中支持8k最大回复。","type": "text"},
-        {"label":"deepseek-chat", "value": "deepseek-chat","descr": "最强开源 MoE 模型 DeepSeek-V3，全球首个在代码、数学能力上与GPT-4-Turbo争锋的模型，在代码、数学的多个榜单上位居全球第二；","type": "text"}
+        {"label": "deepseek-v4-pro", "value": "deepseek-v4-pro","descr": "【官方模型】深度求索 新推出的推理模型R1满血版\n火便全球。\n支持64k上下文，其中支持8k最大回复。","type": "text"},
+        {"label": "deepseek-v4-flash", "value": "deepseek-v4-flash","descr": "【官方模型】深度求索 新推出的推理模型R1满血版\n火便全球。\n支持64k上下文，其中支持8k最大回复。","type": "text"},
+        {"label": "deepseek-reasoner", "value": "deepseek-reasoner","descr": " 2026/07/24下线，【官方模型】深度求索 新推出的推理模型R1满血版\n火便全球。\n支持64k上下文，其中支持8k最大回复。","type": "text"},
+        {"label":"deepseek-chat", "value": "deepseek-chat","descr": "2026/07/24下线，最强开源 MoE 模型 DeepSeek-V3，全球首个在代码、数学能力上与GPT-4-Turbo争锋的模型，在代码、数学的多个榜单上位居全球第二；","type": "text"}
       ],
       "type": ["LLM"],
       "baseUrl": "https://api.deepseek.com/v1",
-      "LLMDefaultValue": "deepseek-chat"
+      "LLMDefaultValue": "deepseek-v4-pro"
     },
     {
       "title": "Ollama",
