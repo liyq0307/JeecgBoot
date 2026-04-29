@@ -7,7 +7,7 @@
 JEECG BOOT AI ローコードプラットフォーム
 ===============
 
-現在のバージョン：3.9.2（リリース日：2026-05-09）
+現在のバージョン：3.9.2（近日公開）
 
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)

@@ -1,6 +1,6 @@
 JeecgBoot 企业级低代码开发平台
 ===============
-当前最新版本： 3.9.2（预计发布时间：2026-05-09）
+当前最新版本： 3.9.2（即将发布）
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://jeecg.com/aboutusIndex)
